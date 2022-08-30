@@ -1,4 +1,4 @@
-# PraticasCoco
+# Praticas
 Practicas de programación avanzada 2
 
 Las prácticas están hechas con:

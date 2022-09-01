@@ -29,6 +29,7 @@ public class KaprekarV1 {
                 isNumber = true;
                 kaprekar.showKaprekar(number);
             } catch (Exception ex) {
+                System.out.println("?");
                 isNumber = false;
             }
 
@@ -108,6 +109,12 @@ public class KaprekarV1 {
 
 class Kaprekar {
 
+    Integer contador;
+
+    public Kaprekar() {
+        this.contador = 0;
+    }
+
     public int sortBS(int number) {
         String numberString = String.format("%04d", number);
         char[] numberStringArray = numberString.toCharArray();
@@ -158,6 +165,7 @@ class Kaprekar {
     }
 
     public void showKaprekar(int number) {
+        contador++;
         int numberSB = sortSB(number);
         int numberBS = sortBS(number);
         if (numberSB == numberBS) {
@@ -169,6 +177,8 @@ class Kaprekar {
 
             if (diff != 6174) {
                 showKaprekar(diff);
+            } else {
+                System.out.println("La constante de kaprekar se ha encontrado en: ".concat(contador.toString()).concat(" pasos"));
             }
         }
 

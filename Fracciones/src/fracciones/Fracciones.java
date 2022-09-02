@@ -82,29 +82,27 @@ public class Fracciones {
             throw new Error("Se esperaba una operacion (mas,menos,por,entre)");
         }
         Fraccion f = new Fraccion();
+        String fraccion = "";
         switch (indexOperacion) {
             case 0://mas
                 f = fracciones[0].sumar(fracciones[1]);
-                String fraccion = fraccionToTexto(f);
-                System.out.println(fraccion);
+
                 break;
             case 1://menos
                 f = fracciones[0].restar(fracciones[1]);
-                fraccion = fraccionToTexto(f);
-                System.out.println(fraccion);
 
                 break;
             case 2://por
                 f = fracciones[0].multiplicar(fracciones[1]);
-                fraccion = fraccionToTexto(f);
-                System.out.println(fraccion);
+
                 break;
             case 3://entre
                 f = fracciones[0].dividir(fracciones[1]);
-                fraccion = fraccionToTexto(f);
-                System.out.println(fraccion);
                 break;
         }
+        fraccion = fraccionToTexto(f);
+
+        System.out.println("Resultado: ".concat(fraccion));
         f.printFraccion();
 
     }
@@ -121,7 +119,7 @@ public class Fracciones {
         boolean isEnabled = true;
         boolean isNegative = false;
         termino = termino.trim();
-        System.out.println(termino);
+        //System.out.println(termino);
         termino = termino.replaceAll("negativo ", "");
         String[] palabras = termino.split((" "));
         for (String palabra : palabras) {
@@ -444,7 +442,7 @@ class Fraccion {
     }
 
     public Fraccion() {
-        
+
     }
 
     public Fraccion sumar(Fraccion f1) {

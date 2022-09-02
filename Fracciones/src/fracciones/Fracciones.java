@@ -5,10 +5,11 @@
 package fracciones;
 
 import java.lang.reflect.Array;
+import java.util.Scanner;
 
 /**
  *
- * @author divah_000
+ * @author Melkor
  */
 public class Fracciones {
 
@@ -17,7 +18,10 @@ public class Fracciones {
      */
     public static void main(String[] args) {
         try {
-            fromExpression("negativo dos cuartos menos negativo un noventavo");
+            System.out.println("Escribe tu operación: ");
+            Scanner input = new Scanner(System.in);
+            String expression = input.nextLine();
+            fromExpression(expression);
         } catch (Error err) {
             System.out.println("Error: ".concat(err.getMessage()));
         }
@@ -81,16 +85,24 @@ public class Fracciones {
         switch (indexOperacion) {
             case 0://mas
                 f = fracciones[0].sumar(fracciones[1]);
+                String fraccion = fraccionToTexto(f);
+                System.out.println(fraccion);
                 break;
             case 1://menos
                 f = fracciones[0].restar(fracciones[1]);
-                readFraccion(f);
+                fraccion = fraccionToTexto(f);
+                System.out.println(fraccion);
+
                 break;
             case 2://por
                 f = fracciones[0].multiplicar(fracciones[1]);
+                fraccion = fraccionToTexto(f);
+                System.out.println(fraccion);
                 break;
             case 3://entre
                 f = fracciones[0].dividir(fracciones[1]);
+                fraccion = fraccionToTexto(f);
+                System.out.println(fraccion);
                 break;
         }
         f.printFraccion();
@@ -119,6 +131,7 @@ public class Fracciones {
         if (palabras[0].equals("menos")) {
             isNegative = true;
         }
+
         if (palabras[palabras.length - 1].contains("avo")) {
             String pal = palabras[palabras.length - 1];
             char lastLetra = pal.charAt(pal.length() - 4);
@@ -211,9 +224,14 @@ public class Fracciones {
                 }
             }
         } else {
-            if (cantidad == 0) {
-                throw new Error("No se encontro el numero escrito para el numerador");
+            if (palabras[0].equals("cero")) {
+                cantidad = 0;
+            } else {
+                if (cantidad == 0) {
+                    throw new Error("No se encontro el numero escrito para el numerador");
+                }
             }
+
         }
         int cantidadDen = 0;
 
@@ -265,20 +283,59 @@ public class Fracciones {
         return fraccion;
     }
 
-    public static String readFraccion(Fraccion f) {
-        f.numerador = 3199;
+    public static String fraccionToTexto(Fraccion f) {
+        String denominador = numeroToTexto(f.denominador);
+        String numerador = numeroToTexto(f.numerador);
+        if (denominador.equals(numerador)) {
+            return "un entero";
+        }
+        if (numerador.equals("cero")) {
+            return numerador;
+        }
+        if (denominador.equals("cero")) {
+            throw new Error("No se puede poner cero en el denominador");
+        }
+        if (denominador.charAt(denominador.length() - 1) == 'a') {
+            denominador = denominador.replace(" ", "").replace("y", "i").concat("vos");
+        } else {
+            denominador = denominador.replace(" ", "").replace("y", "i").concat("avos");
+        }
+
+        denominador = removerLetrasRepetidas(denominador);
+
+        return numerador.concat(" ").concat(denominador);
+    }
+
+    public static String removerLetrasRepetidas(String s) {
+        char[] expression = s.toCharArray();
+        StringBuilder sa = new StringBuilder(s);
+        for (int i = 0; i < sa.length() - 1; i++) {
+            if (sa.charAt(i) == sa.charAt(i + 1)) {
+                sa = sa.deleteCharAt(i + 1);
+            }
+        }
+        return sa.toString();
+    }
+
+    public static String numeroToTexto(int numero) {
         String[] decenas = {"diez", "veinte", "treinta", "cuarenta", "cincuenta", "sesenta", "setenta", "ochenta", "noventa"};
         String[] decenasEx = {"once", "doce", "trece", "catorce", "quince", "dieciseis", "diecisiete", "dieciocho", "diecinueve"};
         String[] unidades = {"un", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve"};
         String[] centenas = {"cien", "doscientos", "trescientos", "cuatrocientos", "quinientos", "seiscientos", "setecientos", "ochoscientos", "novescientos"};
         String[] partitivos = {"medios", "tercios", "cuartos", "quintos", "sextos", "septimos", "octavos", "novenos", "decimos"};
+        if (numero == 0) {
+            return "cero";
+        }
         String mil = "mil";
         String read = "";
         String valor = "";
+        if (numero < 0) {
+            read = read.concat("negativo");
+            numero *= -1;
+        }
         String[] equivalentes = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
         String[] equivalentesEx = {"11", "12", "13", "14", "15", "16", "17", "18", "19"};
-        Integer xD = f.numerador;
-        String formatNum = String.format("%04d", f.numerador);
+        String formatNum = String.format("%04d", numero);
 
         char[] numerador = formatNum.toString().toCharArray();
         int longitud = numerador.length;
@@ -286,7 +343,7 @@ public class Fracciones {
             if (i == 0) {
                 if (!String.valueOf(numerador[i]).equals("0")) {
                     if (numerador[i] == '1') {
-                        read = read.concat(mil);
+                        read = read.concat(mil).concat(" ");
                     } else {
                         valor = unidades[Integer.parseInt(String.valueOf(numerador[i])) - 1];
 
@@ -329,7 +386,7 @@ public class Fracciones {
                         break;
                     } else {
                         valor = decenas[Integer.parseInt(String.valueOf(numerador[i])) - 1];
-                        read = read.concat(" ").concat(valor).concat(" y ");
+                        read = read.concat(" ").concat(valor).concat(" y");
                     }
                 } else {
                     if (conjunto.charAt(0) == '0' && conjunto.charAt(1) == '0') {
@@ -342,81 +399,16 @@ public class Fracciones {
                 if (!String.valueOf(numerador[i]).equals("0")) {
                     valor = unidades[Integer.parseInt(String.valueOf(numerador[i])) - 1];
                     read = read.concat(" ").concat(valor);
-                }else{
+                } else {
                     read = read.replace("y", "");
                 }
 
             }
         }
-        System.out.println(read);
-        return null;
 
+        return read;
     }
 
-    /*
-    String[] decenas = {"diez", "veinte", "treinta", "cuarenta", "cincuenta", "sesenta", "setenta", "ochenta", "noventa"};
-        String[] decenasEx = {"once", "doce", "trece", "catorce", "quince", "dieciseis", "diecisiete", "dieciocho", "diecinueve"};
-        String[] unidades = {"un", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve"};
-        
-        int[] equivalentesEx = {11, 12, 13, 14, 15, 16, 17, 18, 19};
-
-        int[] equivalentes = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-        int cantidad = 0;
-        boolean isDisabled = false;
-        String[] expression = fraccionNatural.split(" ");
-        expression[0] = expression[0].trim();
-        if (expression[0].contains("veinte")) {
-            String veinteNumero = expression[0].substring(7);
-            int index = indexOf(unidades, veinteNumero);
-            if (index != -1) {
-                cantidad = 20 + equivalentes[index];
-            } else {
-                if (veinteNumero.equals("uno")) {
-                    cantidad = 21;
-                    
-                }
-            }
-            isDisabled = true;
-        }
-        String[] decenaSplit = expression[0].split(" ");
-
-        if (indexOf(decenas, decenaSplit[0]) != -1 && !isDisabled) {
-            int number = indexOf(decenas, decenaSplit[0]);
-            cantidad += equivalentes[number] * 10;
-            if (expression[0].contains("y")) {
-                int numberUnidad = indexOf(unidades, decenaSplit[2]);
-                if (numberUnidad != -1) {
-                    cantidad += equivalentes[numberUnidad];
-                } else {
-                    if (decenaSplit[2].equals("uno")) {
-                        cantidad += 1;
-                    }
-                }
-            }
-        }
-        if (indexOf(unidades, expression[0]) != -1 && !isDisabled) {
-            int number = indexOf(unidades, expression[0]);
-            cantidad += equivalentes[number];
-            isDisabled = true;
-        }
-        if (indexOf(decenasEx, expression[0]) != -1 && !isDisabled) {
-            int number = indexOf(decenasEx, expression[0]);
-            cantidad += equivalentesEx[number];
-        }
-        
-        int[] res = new int[2];
-        res[0] = cantidad;
-        if(expression[1].contains("avo")){
-            String exp = expression[1].replace("avo", "");
-        }
-
-        System.out.print("Numero: ");
-
-        System.out.println(cantidad);
-
-        return null;
-
-     */
     public static int indexOf(String[] array, String string) {
         for (int i = 0; i < array.length; i++) {
             if (array[i].equalsIgnoreCase(string)) {
@@ -452,10 +444,22 @@ class Fraccion {
     }
 
     public Fraccion() {
+        
     }
 
     public Fraccion sumar(Fraccion f1) {
         Fraccion f = new Fraccion();
+        if (this.numerador == 0) {
+            f.numerador = f1.numerador;
+            f.denominador = 1;
+            return f;
+        }
+        if (f1.numerador == 0) {
+            f.numerador = this.numerador;
+            f.denominador = 1;
+
+            return f;
+        }
         f.denominador = this.denominador * f1.denominador;
         f.numerador = (this.numerador * f1.denominador) + (f1.numerador * this.denominador);
         return f;
@@ -464,6 +468,17 @@ class Fraccion {
 
     public Fraccion restar(Fraccion f1) {
         Fraccion f = new Fraccion();
+        if (this.numerador == 0) {
+            f.numerador = f1.numerador;
+            f.denominador = 1;
+            return f;
+        }
+        if (f1.numerador == 0) {
+            f.numerador = this.numerador;
+            f.denominador = 1;
+
+            return f;
+        }
         f.denominador = this.denominador * f1.denominador;
         f.numerador = (this.numerador * f1.denominador) - (f1.numerador * this.denominador);
         return f;

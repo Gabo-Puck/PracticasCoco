@@ -284,9 +284,11 @@ public class Fracciones {
     public static String fraccionToTexto(Fraccion f) {
         String denominador = numeroToTexto(f.denominador);
         String numerador = numeroToTexto(f.numerador);
-        if (denominador.equals(numerador)) {
+        /*if (denominador.equals(numerador)) {
             return "un entero";
-        }
+        }*/
+        String[] partitivos = {"medios", "tercios", "cuartos", "quintos", "sextos", "septimos", "octavos", "novenos", "decimos"};
+        
         if (numerador.equals("cero")) {
             return numerador;
         }
@@ -300,6 +302,9 @@ public class Fracciones {
         }
 
         denominador = removerLetrasRepetidas(denominador);
+        if(f.denominador>0 && f.denominador<11){
+            denominador = partitivos[f.denominador-2];
+        }
 
         return numerador.concat(" ").concat(denominador);
     }
@@ -328,7 +333,7 @@ public class Fracciones {
         String read = "";
         String valor = "";
         if (numero < 0) {
-            read = read.concat("negativo");
+            read = read.concat("menos");
             numero *= -1;
         }
         String[] equivalentes = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};

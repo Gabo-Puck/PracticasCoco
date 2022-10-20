@@ -30,21 +30,9 @@ public class CuboControl3d {
             {0, 0, 1, 0},
             {0, 0, 0, 1}
         };
-        Matriz matriz1 = new Matriz(m1);
-        Matriz matriz2 = new Matriz(m2);
-        matriz1.sumarMatriz(matriz2);
+        
 
         new VistaPrincipal().setVisible(true);
-    }
-    
-    public static int[][] createArray(int x,int z,int y){
-        int m[][] = {
-            {1, 0, 0, y},
-            {0, 1, 0, x},
-            {0, 0, 1, z},
-            {0, 0, 0, 1}
-        };
-        return m;
     }
 
 }

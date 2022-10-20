@@ -10,19 +10,21 @@ package Clases;
  */
 public class Matriz {
 
-    public int[][] getMatriz() {
-        return matriz;
-    }
-
-    public void setMatriz(int[][] matriz) {
-        this.matriz = matriz;
-    }
-
-    int[][] matriz;
+    double[][] matriz;
     int x;
     int y;
 
-    public Matriz(int[][] _matriz) {
+    public double[][] getMatriz() {
+        return matriz;
+    }
+
+    public void setMatriz(double[][] matriz) {
+        this.matriz = matriz;
+        x = matriz[0].length;
+        y = matriz.length;
+    }
+
+    public Matriz(double[][] _matriz) {
         if (_matriz.length < 0) {
             throw new Error("La matriz no puede ser 0");
         }
@@ -32,28 +34,36 @@ public class Matriz {
     }
 
     public Matriz() {
+        matriz = new double[][]{
+            {1, 0, 0, 0},
+            {0, 1, 0, 0},
+            {0, 0, 1, 0},
+            {0, 0, 0, 1}
+        };
+        x = matriz[0].length;
+        y = matriz.length;
     }
 
-    public Matriz sumarMatriz(Matriz xd) {
+    public Matriz multiplicarMatriz(Matriz xd) {
         System.out.println("x: " + x + ", y: " + y);
-        int m[][] = {
+        double m[][] = {
             {0, 0, 0, 0},
             {0, 0, 0, 0},
             {0, 0, 0, 0},
             {0, 0, 0, 0}
         };
-        if (x != xd.y) {
-            throw new Error("El numero de columnas de una matriz debe ser igual al numero de filas de de la otra matriz ");
-        }
+//        if (x != xd.y) {
+//            throw new Error("El numero de columnas de una matriz debe ser igual al numero de filas de de la otra matriz ");
+//        }
         for (int d = 0; d < y; d++) {
-            int[] fila = matriz[d];
+            double[] fila = matriz[d];
             for (int i = 0; i < x; i++) {
                 int suma = 0;
 
                 for (int x = 0; x < y; x++) {
-                    int elementoFila = xd.matriz[x][i];
-                    int elementoColumna = fila[x];
-                    int res = elementoColumna * elementoFila;
+                    double elementoFila = xd.matriz[x][i];
+                    double elementoColumna = fila[x];
+                    double res = elementoColumna * elementoFila;
                     suma += res;
 
                 }
@@ -79,5 +89,6 @@ public class Matriz {
          */
         return resultado;
     }
-
+    
+ 
 }

@@ -56,7 +56,6 @@ public class Matriz {
     }
 
     public Matriz multiplicarMatriz(Matriz xd) {
-        System.out.println("x: " + x + ", y: " + y);
         double m[][] = {
             {1, 0, 0, 0},
             {0, 1, 0, 0},
@@ -78,14 +77,14 @@ public class Matriz {
                     suma += res;
 
                 }
-                System.out.print(suma + " ");
+//                System.out.print(suma + " ");
                 m[d][i] = suma;
             }
 
-            System.out.println();
+//            System.out.println();
 
         }
-        System.out.println();
+//        System.out.println();
 
         Matriz resultado = new Matriz(m);
 

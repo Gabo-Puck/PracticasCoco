@@ -92,6 +92,31 @@ public class VistaPrincipal extends JFrame {
             repaint();
         });
         
+        btnRotarNegX.addActionListener((e)->{
+            cubo.rotarNegX();
+            repaint();
+        });
+        
+        btnRotarNegY.addActionListener((e)->{
+            cubo.rotarNegY();
+            repaint();
+        });
+        
+        btnRotarNegZ.addActionListener((e)->{
+            cubo.rotarNegZ();
+            repaint();
+        });
+        
+        btnEscalarPos.addActionListener((e)->{
+            cubo.escalarPos();
+            repaint();
+        });
+        btnEscalarNeg.addActionListener((e)->{
+            cubo.escalarNeg();
+            repaint();
+        });
+        
+        
 
         GroupLayout orden = new GroupLayout(this.getContentPane());
 
@@ -119,6 +144,17 @@ public class VistaPrincipal extends JFrame {
                                                                 .addComponent(btnRotarPosX)
                                                                 .addComponent(btnRotarPosY)
                                                 ).addComponent(btnRotarPosZ)
+                                        ).addGroup(
+                                                orden.createSequentialGroup().addGroup(
+                                                        orden.createParallelGroup()
+                                                                .addComponent(btnRotarNegX)
+                                                                .addComponent(btnRotarNegY)
+                                                ).addComponent(btnRotarNegZ)
+                                        ).addGroup(
+                                                orden.createSequentialGroup().addGroup(
+                                                        orden.createParallelGroup()
+                                                                .addComponent(btnEscalarPos)
+                                                ).addComponent(btnEscalarNeg)
                                         )
                         )
         );
@@ -146,6 +182,17 @@ public class VistaPrincipal extends JFrame {
                                                         .addComponent(btnRotarPosX)
                                                         .addComponent(btnRotarPosY)
                                         ).addComponent(btnRotarPosZ)
+                                ).addGroup(
+                                        orden.createParallelGroup().addGroup(
+                                                orden.createSequentialGroup()
+                                                        .addComponent(btnRotarNegX)
+                                                        .addComponent(btnRotarNegY)
+                                        ).addComponent(btnRotarNegZ)
+                                ).addGroup(
+                                        orden.createParallelGroup().addGroup(
+                                                orden.createSequentialGroup()
+                                                        .addComponent(btnEscalarPos)
+                                        ).addComponent(btnEscalarNeg)
                                 )
                         )
         );

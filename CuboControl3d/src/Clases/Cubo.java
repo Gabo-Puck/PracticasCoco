@@ -32,7 +32,7 @@ public class Cubo {
         x = 300;
         y = 300;
         z = 60;
-        zoom = 1;
+        zoom = 10;
 
         matrizDesplazamiento = new Matriz();
         matrizEstado = new Matriz();
@@ -124,7 +124,7 @@ public class Cubo {
     public void escalarNeg() {
         System.out.println("ZOOM: " + zoom);
 
-        if (zoom > 0.5) {
+        if (zoom > 2) {
             Matriz es = setMatrizEscalarNeg();
             matrizEstado = matrizEstado.multiplicarMatriz(es);
         }
@@ -132,32 +132,30 @@ public class Cubo {
     }
 
     public Matriz setMatrizEscalarPos() {
-        if (zoom < 1.06) {
-            zoom *= 1.06;
-        } else {
-            zoom /= 1.06;
-        }
+//        if (zoom < 1.06) {
+//            zoom *= 1.06;
+//        } else {
+//            zoom /= 1.06;
+//        }
+        zoom++;
         double[][] matrizEscalar = new double[][]{
-            {zoom * 1.1, 0, 0, 0},
-            {0, zoom * 1.1, 0, 0},
-            {0, 0, zoom * 1.1, 0},
+            {1.1, 0, 0, 0},
+            {0, 1.1, 0, 0},
+            {0, 0, 1.1, 0},
             {0, 0, 0, 1}
         };
         return new Matriz(matrizEscalar);
     }
 
     public Matriz setMatrizEscalarNeg() {
-        if (zoom <= 0.9) {
-            zoom /= 0.9;
-        } else {
-            zoom *= 0.9;
-        }
+
         double[][] matrizEscalar = new double[][]{
-            {zoom * 0.9, 0, 0, 0},
-            {0, zoom * 0.9, 0, 0},
-            {0, 0, zoom * 0.9, 0},
+            {0.9, 0, 0, 0},
+            {0, 0.9, 0, 0},
+            {0, 0, 0.9, 0},
             {0, 0, 0, 1}
         };
+        zoom--;
         return new Matriz(matrizEscalar);
     }
 

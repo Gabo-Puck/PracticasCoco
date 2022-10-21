@@ -44,13 +44,24 @@ public class Matriz {
         y = matriz.length;
     }
 
+    public void imprimirMatriz() {
+        for (int d = 0; d < y; d++) {
+            for (int i = 0; i < x; i++) {
+                System.out.print(matriz[d][i] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+
+    }
+
     public Matriz multiplicarMatriz(Matriz xd) {
         System.out.println("x: " + x + ", y: " + y);
         double m[][] = {
-            {0, 0, 0, 0},
-            {0, 0, 0, 0},
-            {0, 0, 0, 0},
-            {0, 0, 0, 0}
+            {1, 0, 0, 0},
+            {0, 1, 0, 0},
+            {0, 0, 1, 0},
+            {0, 0, 0, 1}
         };
 //        if (x != xd.y) {
 //            throw new Error("El numero de columnas de una matriz debe ser igual al numero de filas de de la otra matriz ");
@@ -58,7 +69,7 @@ public class Matriz {
         for (int d = 0; d < y; d++) {
             double[] fila = matriz[d];
             for (int i = 0; i < x; i++) {
-                int suma = 0;
+                double suma = 0;
 
                 for (int x = 0; x < y; x++) {
                     double elementoFila = xd.matriz[x][i];
@@ -89,6 +100,5 @@ public class Matriz {
          */
         return resultado;
     }
-    
- 
+
 }

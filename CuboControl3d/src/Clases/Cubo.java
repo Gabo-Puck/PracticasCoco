@@ -18,7 +18,94 @@ public class Cubo {
     Matriz matrizRotacionX;
     Matriz matrizRotacionY;
     Matriz matrizRotacionZ;
+    Matriz matrizEstado;
     double[][] coordenadas;
+    double angulo;
+    int x, y, z;
+    int zoom;
+    Graphics g;
+
+    public void setG(Graphics g) {
+        this.g = g;
+    }
+
+    public Cubo() {
+        matricesBase = new Matriz[16];
+        angulo = 60;
+
+        x = 300;
+        y = 300;
+        z = 60;
+        zoom = 1;
+
+        matrizDesplazamiento = new Matriz();
+        matrizEscalar = new Matriz();
+        matrizRotacionX = new Matriz();
+        matrizRotacionY = new Matriz();
+        matrizRotacionZ = new Matriz();
+        matrizEstado = new Matriz();
+
+        setMatricesBase();
+        matrizEstado.setMatriz(createArray(x, y, z));//Inicializamos la matriz de estado unicamente con una matriz de desplazamiento;
+        System.out.println();
+    }
+
+    public void moverPosX() {
+        Matriz despX = new Matriz();
+        despX.setMatriz(createArray(10, 0, 0));
+        despX = despX.multiplicarMatriz(matrizEstado);
+        matrizEstado = (despX);
+    }
+
+    public void moverPosY() {
+        Matriz despY = new Matriz();
+        despY.setMatriz(createArray(0, 10, 0));
+        despY = despY.multiplicarMatriz(matrizEstado);
+        matrizEstado = (despY);
+    }
+
+    public void moverPosZ() {
+        Matriz despZ = new Matriz();
+        despZ.setMatriz(createArray(0, 0, 10));
+        despZ = despZ.multiplicarMatriz(matrizEstado);
+        matrizEstado = (despZ);
+    }
+
+    public void moverNegX() {
+        Matriz despX = new Matriz();
+        despX.setMatriz(createArray(-10, 0, 0));
+        despX = despX.multiplicarMatriz(matrizEstado);
+        matrizEstado = (despX);
+    }
+
+    public void moverNegY() {
+        Matriz despY = new Matriz();
+        despY.setMatriz(createArray(0, -10, 0));
+        despY = despY.multiplicarMatriz(matrizEstado);
+        matrizEstado = (despY);
+    }
+
+    public void moverNegZ() {
+        Matriz despZ = new Matriz();
+        despZ.setMatriz(createArray(0, 0, -10));
+        despZ = despZ.multiplicarMatriz(matrizEstado);
+        matrizEstado = (despZ);
+    }
+
+    public void rotarPosX() {
+        Matriz rotX = setMatrizRotacionX();
+        matrizEstado = matrizEstado.multiplicarMatriz(rotX);
+    }
+
+    public void rotarPosY() {
+        Matriz rotY = setMatrizRotacionY();
+        matrizEstado = matrizEstado.multiplicarMatriz(rotY);
+    }
+
+    public void rotarPosZ() {
+        Matriz rotZ = setMatrizRotacionZ();
+        matrizEstado = matrizEstado.multiplicarMatriz(rotZ);
+    }
 
     public void setMatrizDesplazamiento() {
         double[] modificaciones = {x, y, z};
@@ -37,90 +124,59 @@ public class Cubo {
         }
     }
 
-    public void setMatrizRotacionX() {
-        double a = Math.toRadians(angulo);
-        for (int i = 1; i < 3; i++) {
-            for (int j = 1; j < 3; j++) {
-                if (i == j) {
-                    matrizRotacionX.matriz[i][j] = Math.cos(a);
-                } else if (i == 1 && j == 2) {
-                    matrizRotacionX.matriz[i][j] = Math.sin(a);
-                } else {
-                    matrizRotacionX.matriz[i][j] = -Math.sin(a);
-                }
-            }
-        }
+    public Matriz setMatrizRotacionX() {
+        double a = Math.toRadians(20);
+        double[][] matrizRot = new double[][]{
+            {1, 0, 0, 0},
+            {0, Math.cos(a), -Math.sin(a), 0},
+            {0, Math.sin(a), Math.cos(a), 0},
+            {0, 0, 0, 1}
+        };
+//        double[][] matrizRot = new double[][]{
+//            {1,0,0,0},
+//            {0,1,1,0},
+//            {0,1,1,0},
+//            {0,0,0,1}
+//        };
+        System.out.println("MATRIZ DE ROTACION X");
+        Matriz matrizRotX = new Matriz(matrizRot);
+        matrizRotX.imprimirMatriz();
+
+//        for (int i = 1; i < 3; i++) {
+//            for (int j = 1; j < 3; j++) {
+//                if (i == j) {
+//                    matrizRotX.matriz[i][j] = Math.cos(a);
+//                } else if (i == 1 && j == 2) {
+//                    matrizRotX.matriz[i][j] = Math.sin(a);
+//                } else {
+//                    matrizRotX.matriz[i][j] = -Math.sin(a);
+//                }
+//            }
+//        }
+        return matrizRotX;
     }
 
-    public void setMatrizRotacionY() {
-        double b = Math.toRadians(angulo);
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (i == j && i == 0) {
-                    matrizRotacionY.matriz[i][j] = Math.cos(b);
-                }
-                if (i == j && i == 2) {
-                    matrizRotacionY.matriz[i][j] = Math.cos(b);
-                } else if (j == 2 && i == 0) {
-                    matrizRotacionY.matriz[i][j] = -Math.sin(b);
-                } else if (i == 2 && j == 0) {
-                    matrizRotacionY.matriz[i][j] = Math.sin(b);
-                }
-            }
-        }
+    public Matriz setMatrizRotacionY() {
+        double b = Math.toRadians(20);
+        double[][] matrizRot = new double[][]{
+            {Math.cos(b), 0, Math.sin(b), 0},
+            {0, 1, 0, 0},
+            {-Math.sin(b), 0, Math.cos(b), 0},
+            {0, 0, 0, 1}
+        };
+        Matriz matrizRotY = new Matriz(matrizRot);
+        return matrizRotY;
     }
 
-    public void setMatrizRotacionZ() {
-        double t = Math.toRadians(angulo);
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 2; j++) {
-                if (i == j) {
-                    matrizRotacionZ.matriz[i][j] = Math.cos(t);
-                } else if (i == 1 && j == 0) {
-                    matrizRotacionZ.matriz[i][j] = Math.sin(t);
-                } else {
-                    matrizRotacionZ.matriz[i][j] = -Math.sin(t);
-                }
-            }
-        }
-    }
-
-    int angulo;
-    int x, y, z;
-    int offset;
-    int zoom;
-
-    public Cubo() {
-        matricesBase = new Matriz[16];
-        angulo = 90;
-
-        x = 350;
-        y = 350;
-        z = 50;
-        zoom = 1;
-
-        matrizDesplazamiento = new Matriz();
-        matrizEscalar = new Matriz();
-        matrizRotacionX = new Matriz();
-        matrizRotacionY = new Matriz();
-        matrizRotacionZ = new Matriz();
-        setMatrizDesplazamiento();
-        setMatrizEscalar();
-        setMatrizRotacionX();
-        setMatrizRotacionY();
-        setMatrizRotacionZ();
-        setMatricesBase();
-        coordenadas = new double[][]{
-            {0, 0, 0},
-            {0, 0, 0},
-            {0, 0, 0},
-            {0, 0, 0},
-            {0, 0, 0},
-            {0, 0, 0},
-            {0, 0, 0},
-            {0, 0, 0}};
-        getCoordenadas();
-        System.out.println();
+    public Matriz setMatrizRotacionZ() {
+        double t = Math.toRadians(20);
+        double[][] matrizRot = new double[][]{
+            {Math.cos(t), -Math.sin(t), 0, 0},
+            {Math.sin(t), Math.cos(t), 0, 0},
+            {0, 0, 1, 0},
+            {0, 0, 0, 1}
+        };
+        return new Matriz(matrizRot);
     }
 
     public void setMatricesBase() {
@@ -128,86 +184,125 @@ public class Cubo {
             matricesBase[i] = new Matriz();
         }
         matricesBase[0].setMatriz(createArray(0, 0, 0));
+        System.out.println("1");
+        matricesBase[0].imprimirMatriz();
         matricesBase[1].setMatriz(createArray(0, 100, 0));
+        System.out.println("2");
+        matricesBase[1].imprimirMatriz();
+
         matricesBase[2].setMatriz(createArray(100, 0, 0));
+        System.out.println("3");
+        matricesBase[2].imprimirMatriz();
+
         matricesBase[3].setMatriz(createArray(0, -100, 0));
+        System.out.println("4");
+        matricesBase[3].imprimirMatriz();
 
         matricesBase[4].setMatriz(createArray(-100, 0, 0));
+        System.out.println("5");
+        matricesBase[4].imprimirMatriz();
         matricesBase[5].setMatriz(createArray(0, 0, 100));
+        System.out.println("6");
+        matricesBase[5].imprimirMatriz();
         matricesBase[6].setMatriz(createArray(100, 0, 0));
+        System.out.println("7");
+        matricesBase[6].imprimirMatriz();
         matricesBase[7].setMatriz(createArray(0, 0, -100));
+        System.out.println("8");
+        matricesBase[7].imprimirMatriz();
 
         matricesBase[8].setMatriz(createArray(0, 100, 0));
+        System.out.println("9");
+        matricesBase[8].imprimirMatriz();
         matricesBase[9].setMatriz(createArray(0, 0, 100));
+        System.out.println("10");
+        matricesBase[9].imprimirMatriz();
         matricesBase[10].setMatriz(createArray(0, -100, 0));
+        System.out.println("11");
+        matricesBase[10].imprimirMatriz();
         matricesBase[11].setMatriz(createArray(-100, 0, 0));
+        System.out.println("12");
+        matricesBase[11].imprimirMatriz();
 
         matricesBase[12].setMatriz(createArray(0, 100, 0));
+        System.out.println("13");
+        matricesBase[12].imprimirMatriz();
         matricesBase[13].setMatriz(createArray(100, 0, 0));
+        System.out.println("14");
+        matricesBase[13].imprimirMatriz();
         matricesBase[14].setMatriz(createArray(-100, 0, 0));
+        System.out.println("15");
+        matricesBase[14].imprimirMatriz();
         matricesBase[15].setMatriz(createArray(0, 0, -100));
+        System.out.println("16");
+        matricesBase[15].imprimirMatriz();
+
     }
 
     public Matriz getMatrizEstado() {
         Matriz resultado = new Matriz();
+        setMatrizDesplazamiento();
         resultado = resultado.multiplicarMatriz(matrizDesplazamiento);
-//        resultado = resultado.multiplicarMatriz(matrizEscalar);
-//        resultado = resultado.multiplicarMatriz(matrizRotacionX);
-//        resultado = resultado.multiplicarMatriz(matrizRotacionY);
-//        resultado = resultado.multiplicarMatriz(matrizRotacionZ);
         return resultado;
     }
 
-    public Matriz getCoordenadas() {
-        //matricesAbs[0].setMatriz(setME(x, y, z, zoom, alpha, beta, delta, theta));
-        Matriz matrizTemporal = new Matriz();
-        matrizTemporal = matrizTemporal.multiplicarMatriz(getMatrizEstado());
-        matrizTemporal = matrizTemporal.multiplicarMatriz(matricesBase[0]);
-        for (int i = 1; i < matricesBase.length; i++) {
-            matrizTemporal = matrizTemporal.multiplicarMatriz(matricesBase[i]);
-            if (i % 2 == 0 || i == matricesBase.length - 1) {
-                int index = (i != matricesBase.length - 1) ? i / 2 : coordenadas.length;
-                coordenadas[index - 1][0] = matrizTemporal.matriz[0][3];//x
-                coordenadas[index - 1][1] = matrizTemporal.matriz[1][3];//y
-                coordenadas[index - 1][2] = matrizTemporal.matriz[2][3];//z
-            }
-        }
-
-        System.out.println();
-        return matrizTemporal;
-    }
-
-    public double[][] createArray(int y, int x, int z) {
+//    public Matriz getCoordenadas() {
+//        //matricesAbs[0].setMatriz(setME(x, y, z, zoom, alpha, beta, delta, theta));
+//        Matriz matrizTemporal = new Matriz();
+//        matrizTemporal = matrizTemporal.multiplicarMatriz(getMatrizEstado());
+////        matrizTemporal = matrizTemporal.multiplicarMatriz(matricesBase[0]);
+//        for (int i = 0; i < matricesBase.length; i++) {
+//            matrizTemporal = matrizTemporal.multiplicarMatriz(matricesBase[i]);
+//
+//            if (i % 2 == 0 || i == matricesBase.length - 1) {
+//                int index = (i != matricesBase.length - 1) ? i / 2 : coordenadas.length - 1;
+//                coordenadas[index][0] = matrizTemporal.matriz[0][3];//x
+//                coordenadas[index][1] = matrizTemporal.matriz[1][3];//y
+//                coordenadas[index][2] = matrizTemporal.matriz[2][3];//z
+//            }
+////            matrizTemporal = matrizTemporal.multiplicarMatriz(matricesBase[i]);
+//
+//        }
+//
+//        System.out.println();
+//        return matrizTemporal;
+//    }
+    public double[][] createArray(int x, int y, int z) {
         double m[][] = {
-            {1, 0, 0, y},
-            {0, 1, 0, x},
+            {1, 0, 0, x},
+            {0, 1, 0, y},
             {0, 0, 1, z},
             {0, 0, 0, 1}
         };
         return m;
     }
 
-    public void dibujarCubo(Graphics g) {
-        double coordPrevX = coordenadas[0][0];
-        double coordPrevY = coordenadas[0][1];
-        double coordPrevZ = coordenadas[0][2];
-
-        int prevY = getY(coordPrevY, coordPrevZ);
-        int prevX = getX(coordPrevX, coordPrevZ);
+    public void dibujarCubo() {
         System.out.println("*********************COORDENADAS*********************");
-        for (int i = 1; i < coordenadas.length; i++) {
-            double coordActualX = coordenadas[i][0];
-            double coordActualY = coordenadas[i][1];
-            double coordActualZ = coordenadas[i][2];
-            int actualX = getY(coordActualX, coordActualZ);
-            int actualY = getY(coordActualY, coordActualZ);
+        setMatricesBase();
 
-            System.out.println("prevX: " + prevX + " prevY: " + prevY + " actualX: " + actualX + " actualY: " + actualY);
-            g.drawLine(prevX, prevY, actualX, actualY);
-//            g.drawLine(actualX, actualY, prevX, prevY);
+        for (int i = 0; i < matricesBase.length - 1; i++) {
+            if (i == 0) {
+                System.out.println("MATRIZ ESTADO");
+                matrizEstado.imprimirMatriz();
+                matricesBase[0] = matricesBase[0].multiplicarMatriz(matrizEstado);
+            }
+            double xMatrizActual = matricesBase[i].matriz[0][3];
+            double yMatrizActual = matricesBase[i].matriz[1][3];
+            double zMatrizActual = matricesBase[i].matriz[2][3];
 
-            prevY = actualY;
-            prevX = actualX;
+            int x1 = getX(xMatrizActual, zMatrizActual);
+            int y1 = getY(yMatrizActual, zMatrizActual);
+            matricesBase[i + 1] = matricesBase[i].multiplicarMatriz(matricesBase[i + 1]);
+
+            double xMatrizNext = matricesBase[i + 1].matriz[0][3];
+            double yMatrizNext = matricesBase[i + 1].matriz[1][3];
+            double zMatrizNext = matricesBase[i + 1].matriz[2][3];
+
+            int x2 = getX(xMatrizNext, zMatrizNext);
+            int y2 = getY(yMatrizNext, zMatrizNext);
+
+            g.drawLine(x1, y1, x2, y2);
 
         }
         System.out.println("*****************************************************");
@@ -215,12 +310,14 @@ public class Cubo {
     }
 
     public int getY(double y, double z) {
-        int yd = (int) (y - z * Math.sin(angulo));
+        double a = Math.toRadians(angulo);
+        int yd = (int) (y - z * Math.sin(a));
         return yd;
     }
 
     public int getX(double x, double z) {
-        int xd = (int) (x - z * Math.cos(angulo));
+        double a = Math.toRadians(angulo);
+        int xd = (int) (x - z * Math.cos(a));
         return xd;
     }
 
